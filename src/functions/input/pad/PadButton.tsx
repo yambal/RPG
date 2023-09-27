@@ -1,18 +1,17 @@
 import { TilingSprite } from "@pixi/react"
 import * as PIXI from 'pixi.js';
 import React from "react";
+import { InputDirection } from "../../../app/types/InputDirection";
 
 export type PadButtonProps = {
   texture: PIXI.Texture<PIXI.Resource>,
-  direction: ButtonDirection
+  direction: InputDirection
   x?: number
   y?: number
   active?: boolean
-  onMouseDown: (direction: ButtonDirection) => void
-  onMouseUp: (direction: ButtonDirection) => void
+  onMouseDown: (direction: InputDirection) => void
+  onMouseUp: (direction: InputDirection) => void
 }
-
-export type ButtonDirection = 'east' | 'west' | 'south' | 'north'
 
 export const PadButton = ({
   texture,
