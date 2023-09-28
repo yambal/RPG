@@ -12,6 +12,8 @@ import { useInputDirection } from './functions/input/hooks/useDirection';
 import { useAppDispatch } from './app/selectors/selector';
 import { clearDirection, setDirection } from './functions/input/inputSlice';
 import { CharDirection } from './app/types/CharDirection';
+import { Tick } from './functions/tick/Tick';
+import { useMount } from 'react-use';
 
 
 function App() {
@@ -67,7 +69,17 @@ function App() {
         width={300}
         height={300}
         options={{ backgroundColor: 0xeef1f5 }}
+        onMount={(app) => {
+          const myTicker = new PIXI.Ticker();
+          myTicker.minFPS = 30
+          myTicker.maxFPS = 30
+          myTicker.start()
+
+          app.ticker = myTicker
+        }}
+        raf={false}
       >
+        <Tick />
         <TileMap texture={texture} tileSize={64} textureSize={16} tileMapData={tileMapData}/>
         <NumpadCharactor
           texture={charaTexture}
