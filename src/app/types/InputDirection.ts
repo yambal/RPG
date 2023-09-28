@@ -1,0 +1,1 @@
+export type InputDirection = 'north' | 'south' | 'east' | 'west' | null

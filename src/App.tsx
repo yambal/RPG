@@ -1,16 +1,24 @@
 import * as PIXI from 'pixi.js';
-import { Stage, Container, Sprite, Text } from '@pixi/react';
-import { useMemo } from 'react';
+import { Stage, Container, Text } from '@pixi/react';
+import React from 'react';
 import dummy from "./images/map1.png"
 import chara from "./images/numPadCharactor.png"
 import { TileMap, TileMapData } from './components/tileMap/TileMap';
 import { NumpadCharactor } from './components/numpadCharactor/NumpadCharactor'
 import { KeyboadInput } from './functions/input/KeyboadInput';
+import { Pad } from './functions/input/pad/Pad';
+import { InputDirection } from './app/types/InputDirection';
+import { useInputDirection } from './functions/input/hooks/useDirection';
+import { useAppDispatch } from './app/selectors/selector';
+import { clearDirection, setDirection } from './functions/input/inputSlice';
+import { CharDirection } from './app/types/CharDirection';
+import { Tick } from './functions/tick/Tick';
+import { useMount } from 'react-use';
 
 
 function App() {
-  // const blurFilter = useMemo(() => new PIXI.BlurFilter(4), []);
-  
+  const [charDirection, setCharDirection] = React.useState<CharDirection>('north')
+
   const texture = PIXI.Texture.from(dummy, {scaleMode: PIXI.SCALE_MODES.NEAREST})
   const charaTexture = PIXI.Texture.from(chara, {scaleMode: PIXI.SCALE_MODES.NEAREST})
 
@@ -37,16 +45,41 @@ function App() {
     ]
   ]
 
-  
+  const dispatch = useAppDispatch()
+  const padDownHandler = React.useCallback((inputDirection: InputDirection) => {
+    dispatch(setDirection({direction: inputDirection}))
+  }, [dispatch])
+
+  const padUpHandler = React.useCallback((inputDirection: InputDirection) => {
+    dispatch(clearDirection({direction: inputDirection}))
+  }, [dispatch])
+
+  const inputDirection = useInputDirection()
+
+  React.useEffect(() => {
+    if (inputDirection) {
+      setCharDirection(inputDirection)
+    }
+  }, [inputDirection])
 
   return (
     <>
-      
+      <KeyboadInput />
       <Stage
         width={300}
         height={300}
         options={{ backgroundColor: 0xeef1f5 }}
+        onMount={(app) => {
+          const myTicker = new PIXI.Ticker();
+          myTicker.minFPS = 30
+          myTicker.maxFPS = 30
+          myTicker.start()
+
+          app.ticker = myTicker
+        }}
+        raf={false}
       >
+        <Tick />
         <TileMap texture={texture} tileSize={64} textureSize={16} tileMapData={tileMapData}/>
         <NumpadCharactor
           texture={charaTexture}
@@ -58,8 +91,8 @@ function App() {
           }}
           tileSizeWidth={64}
           tilesizeHeight={96}
+          charDirection={charDirection}
         />
-        <KeyboadInput />
         <Container x={150} y={200}>
           <Text 
             style={
@@ -72,6 +105,11 @@ function App() {
             anchor={{ x: 0.5, y: 0.5 }}
           />
         </Container>
+        <Pad 
+          onPadDown={padDownHandler}
+          onPadUp={padUpHandler}
+          inputDirection={inputDirection}
+        />
       </Stage>
     </>
   );

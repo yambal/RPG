@@ -1,21 +1,30 @@
 import { Container } from "@pixi/react"
-import { ButtonDirection, PadButton } from "./PadButton"
+import { PadButton } from "./PadButton"
 import pad1 from "./pad1.png"
 import * as PIXI from 'pixi.js'
 import React from "react";
+import { InputDirection } from "../../../app/types/InputDirection";
 
-export const Pad = () => {
-  const [direction, setDirection] = React.useState<ButtonDirection | null>(null)
+export type PadProps = {
+  inputDirection : InputDirection,
+  onPadDown: (direction: InputDirection) => void,
+  onPadUp: (direction: InputDirection) => void
+} 
 
+export const Pad = ({
+  inputDirection = null,
+  onPadDown,
+  onPadUp
+}: PadProps) => {
   const texture = PIXI.Texture.from(pad1, {scaleMode: PIXI.SCALE_MODES.NEAREST})
 
-  const handleMouseDown = React.useCallback((direction: ButtonDirection) => {
-    setDirection(direction)
-  }, [])
+  const handleMouseDown = React.useCallback((inputDirection: InputDirection) => {
+    onPadDown(inputDirection)
+  }, [onPadDown])
 
-  const handleMouseUp = React.useCallback((direction: ButtonDirection) => {
-    setDirection(null)
-  }, [])
+  const handleMouseUp = React.useCallback((inputDirection: InputDirection) => {
+    onPadUp(inputDirection)
+  }, [onPadUp])
 
   return (
     <Container
@@ -26,10 +35,10 @@ export const Pad = () => {
         y: 0.25
       }}
     >
-      <PadButton active={direction === "north"} texture={texture} direction="north" onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}/>
-      <PadButton active={direction === "south"} texture={texture} direction="south" onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}/>
-      <PadButton active={direction === "east"} texture={texture} direction="east" onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}/>
-      <PadButton active={direction === "west"} texture={texture} direction="west" onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}/>
+      <PadButton active={inputDirection === "north"} texture={texture} direction="north" onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}/>
+      <PadButton active={inputDirection === "south"} texture={texture} direction="south" onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}/>
+      <PadButton active={inputDirection === "east"} texture={texture} direction="east" onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}/>
+      <PadButton active={inputDirection === "west"} texture={texture} direction="west" onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}/>
     </Container>
   )
 }
