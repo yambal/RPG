@@ -4,6 +4,7 @@ import pad1 from "./pad1.png"
 import * as PIXI from 'pixi.js'
 import React from "react";
 import { InputDirection } from "../../../app/types/InputDirection";
+import { useKeyPressEvent } from "react-use";
 
 export type PadProps = {
   inputDirection : InputDirection,
@@ -17,6 +18,30 @@ export const Pad = ({
   onPadUp
 }: PadProps) => {
   const texture = PIXI.Texture.from(pad1, {scaleMode: PIXI.SCALE_MODES.NEAREST})
+
+  useKeyPressEvent('w', () => {
+    onPadDown('north')
+  }, () => {
+    onPadUp('north')
+  })
+
+  useKeyPressEvent('a', () => {
+    onPadDown('west')
+  }, () => {
+    onPadUp('west')
+  })
+
+  useKeyPressEvent('d', () => {
+    onPadDown('east')
+  }, () => {
+    onPadUp('east')
+  })
+
+  useKeyPressEvent('s', () => {
+    onPadDown('south')
+  }, () => {
+    onPadUp('south')
+  })
 
   const handleMouseDown = React.useCallback((inputDirection: InputDirection) => {
     onPadDown(inputDirection)

@@ -10,7 +10,9 @@ export type NumpadCharactorProps = {
   tileSizeWidth?: number
   tilesizeHeight?: number
   charDirection: CharDirection
-  textureMap: NumpadCharactorTextureMap
+  textureMap: NumpadCharactorTextureMap,
+  x: number,
+  y: number
 }
 
 type NumpadCharactorTextureMap = {
@@ -32,7 +34,9 @@ export const NumpadCharactor = ({
   tileSizeWidth = 32,
   tilesizeHeight = 48,
   charDirection = 'south',
-  textureMap
+  textureMap,
+  x,
+  y
 }: NumpadCharactorProps) => {
 
   const tilePosition = React.useMemo(() => {
@@ -57,6 +61,8 @@ export const NumpadCharactor = ({
       width={tileSizeWidth}
       height={tilesizeHeight}
       tilePosition={tilePosition}
+      x={x}
+      y={y}
     />
   )
 }
