@@ -28,8 +28,8 @@ export const playerSlice = createSlice({
     setPlayerDirection: (state, action: PayloadAction<{charDirection: CharDirection}>) => {
       state.direction = action.payload.charDirection
     },
-    setPosition: (state, action: PayloadAction<{position: PlayerPosition}>) => {
-      state.position = action.payload.position
+    setPlayerPosition: (state, action: PayloadAction<{playerPosition: PlayerPosition}>) => {
+      state.position = action.payload.playerPosition
     },
     movePlayerTo: (state, action: PayloadAction<{inputDirection: InputDirection}>) => {
       switch(action.payload.inputDirection){
@@ -53,6 +53,6 @@ export const playerSlice = createSlice({
 })
 
 // Action creators are generated for each case reducer functionddd
-export const { setPlayerDirection, setPosition, movePlayerTo } = playerSlice.actions
+export const { setPlayerDirection, setPlayerPosition, movePlayerTo } = playerSlice.actions
 
 export default playerSlice.reducer

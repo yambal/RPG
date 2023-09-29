@@ -1,19 +1,18 @@
 import * as PIXI from 'pixi.js'
 import chara from "../../images/numPadCharactor.png"
 import { NumpadCharactor } from "../../components/numpadCharactor/NumpadCharactor"
-import React from 'react'
 import { CharDirection } from '../../app/types/CharDirection'
 
 export type PlayerProps = {
   x: number
   y: number
-  charDirection: CharDirection
+  uiCharDirection: CharDirection
 }
 
 export const Player = ({
   x,
   y,
-  charDirection
+  uiCharDirection
 }: PlayerProps) => {
   const charaTexture = PIXI.Texture.from(chara, {scaleMode: PIXI.SCALE_MODES.NEAREST})
   return (
@@ -27,7 +26,7 @@ export const Player = ({
       }}
       tileSizeWidth={64}
       tilesizeHeight={96}
-      charDirection={charDirection}
+      charDirection={uiCharDirection}
       x={x}
       y={y}
     />

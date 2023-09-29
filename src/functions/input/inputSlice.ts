@@ -3,29 +3,29 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import { InputDirection } from '../../app/types/InputDirection'
 
 export interface CounterState {
-  direction: InputDirection
+  inputDirection: InputDirection
 }
 
 const initialState: CounterState = {
-  direction: null
+  inputDirection: null
 }
 
 export const inputSlice = createSlice({
   name: 'input',
   initialState,
   reducers: {
-    setDirection: (state, action: PayloadAction<{direction: InputDirection}>) => {
-      state.direction = action.payload.direction
+    setInputDirection: (state, action: PayloadAction<{inputDirection: InputDirection}>) => {
+      state.inputDirection = action.payload.inputDirection
     },
-    clearDirection: (state, action: PayloadAction<{direction: InputDirection}>) => {
-      if (state.direction === action.payload.direction) {
-        state.direction = null
+    clearInputDirection: (state, action: PayloadAction<{inputDirection: InputDirection}>) => {
+      if (state.inputDirection === action.payload.inputDirection) {
+        state.inputDirection = null
       }
     }
   },
 })
 
 // Action creators are generated for each case reducer function
-export const { setDirection, clearDirection } = inputSlice.actions
+export const { setInputDirection, clearInputDirection } = inputSlice.actions
 
 export default inputSlice.reducer

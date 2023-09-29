@@ -7,13 +7,28 @@ import { InputDirection } from "../../../app/types/InputDirection";
 import { useKeyPressEvent } from "react-use";
 
 export type PadProps = {
-  inputDirection : InputDirection,
+  /**
+   * 現在の押下状態としてUIに表示される方向
+   */
+  uiInputDirection : InputDirection,
+
+  /**
+   * 十字キー、あるいは同等のキーが押下されたときのハンドラ
+   * @param direction 方向を示す
+   * @returns 
+   */
   onPadDown: (direction: InputDirection) => void,
+
+  /**
+   * 十字キー、あるいは同等のキーが押下が解除されたときのハンドラ
+   * @param direction 方向を示す
+   * @returns 
+   */
   onPadUp: (direction: InputDirection) => void
 } 
 
 export const Pad = ({
-  inputDirection = null,
+  uiInputDirection = null,
   onPadDown,
   onPadUp
 }: PadProps) => {
@@ -60,10 +75,10 @@ export const Pad = ({
         y: 0.25
       }}
     >
-      <PadButton active={inputDirection === "north"} texture={texture} direction="north" onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}/>
-      <PadButton active={inputDirection === "south"} texture={texture} direction="south" onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}/>
-      <PadButton active={inputDirection === "east"} texture={texture} direction="east" onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}/>
-      <PadButton active={inputDirection === "west"} texture={texture} direction="west" onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}/>
+      <PadButton active={uiInputDirection === "north"} texture={texture} direction="north" onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}/>
+      <PadButton active={uiInputDirection === "south"} texture={texture} direction="south" onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}/>
+      <PadButton active={uiInputDirection === "east"} texture={texture} direction="east" onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}/>
+      <PadButton active={uiInputDirection === "west"} texture={texture} direction="west" onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}/>
     </Container>
   )
 }
