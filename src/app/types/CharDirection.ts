@@ -1,1 +1,0 @@
-export type CharDirection = 'south' | 'north' | 'west' | 'east'

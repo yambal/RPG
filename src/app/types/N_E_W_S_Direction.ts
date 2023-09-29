@@ -1,0 +1,1 @@
+export type N_E_W_S_Direction = 'south' | 'north' | 'west' | 'east'

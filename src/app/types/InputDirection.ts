@@ -1,1 +1,3 @@
-export type InputDirection = 'north' | 'south' | 'east' | 'west' | null
+import { N_E_W_S_Direction } from "./N_E_W_S_Direction"
+
+export type InputDirection = N_E_W_S_Direction | null

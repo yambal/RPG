@@ -1,7 +1,7 @@
 import { TilingSprite } from "@pixi/react"
 import * as PIXI from 'pixi.js';
 import React from "react";
-import { CharDirection } from "../../app/types/CharDirection";
+import { N_E_W_S_Direction } from "../../app/types/N_E_W_S_Direction";
 
 export type NumpadCharactorProps = {
   texture: PIXI.Texture<PIXI.Resource>
@@ -9,7 +9,7 @@ export type NumpadCharactorProps = {
   textureSizeHeight?: number
   tileSizeWidth?: number
   tilesizeHeight?: number
-  charDirection: CharDirection
+  charDirection: N_E_W_S_Direction
   textureMap: NumpadCharactorTextureMap,
   x: number,
   y: number

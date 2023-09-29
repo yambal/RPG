@@ -1,12 +1,12 @@
 import * as PIXI from 'pixi.js'
 import chara from "../../images/numPadCharactor.png"
 import { NumpadCharactor } from "../../components/numpadCharactor/NumpadCharactor"
-import { CharDirection } from '../../app/types/CharDirection'
+import { N_E_W_S_Direction } from '../../app/types/N_E_W_S_Direction'
 
 export type PlayerProps = {
   x: number
   y: number
-  uiCharDirection: CharDirection
+  uiCharDirection: N_E_W_S_Direction
 }
 
 export const Player = ({

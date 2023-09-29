@@ -10,9 +10,8 @@ import { useAppDispatch } from '../../app/selectors/selector';
 import { clearInputDirection, setInputDirection } from '../../functions/input/inputSlice';
 import { Tick } from '../../functions/tick/Tick';
 import { Player } from '../player/Player';
-import { movePlayerTo, setPlayerDirection } from '../player/playerSlice';
-import { usePlayerPosition } from '../player/hooks/usePlayerPosition';
-import { usePlayerDirection } from '../player/hooks/usePlayerDirection';
+import { movePlayerTo, setPlayerCharDirection, setPlayerMoveToTarget } from '../player/playerSlice';
+import { usePlayerPosition, usePlayerDirection, usePlayerMoveToTarget } from '../player/hooks';
 
 export const RpgApp = () => {
   const texture = PIXI.Texture.from(dummy, {scaleMode: PIXI.SCALE_MODES.NEAREST})
@@ -22,7 +21,7 @@ export const RpgApp = () => {
   const padDownHandler = React.useCallback((newInputDirection: InputDirection) => {
     dispatch(setInputDirection({inputDirection: newInputDirection}))
     if (newInputDirection) {
-      dispatch(setPlayerDirection({charDirection: newInputDirection}))
+      dispatch(setPlayerCharDirection({charDirection: newInputDirection}))
     }
   }, [dispatch])
 
@@ -31,13 +30,25 @@ export const RpgApp = () => {
   }, [dispatch])
 
   const inputDirection = useInputDirection()
-
-  const onTickHandler = React.useCallback(() => {
-      dispatch(movePlayerTo({inputDirection}))
-    }, [dispatch, inputDirection]
-  )
+  const playerMovingToDirection = usePlayerMoveToTarget()
 
   const playerPosition = usePlayerPosition()
+
+  const onTickHandler = React.useCallback(() => {
+      if (playerMovingToDirection) {
+        if (playerPosition.x > 64) {
+          dispatch(setPlayerMoveToTarget({playerMovingToDirection: null}))
+        } else {
+          dispatch(movePlayerTo({inputDirection: playerMovingToDirection}))
+        }
+      } else if (inputDirection){
+        dispatch(setPlayerMoveToTarget({playerMovingToDirection: inputDirection}))
+      }
+      
+    }, [dispatch, inputDirection, playerPosition.x, playerMovingToDirection]
+  )
+
+
   const charDirection = usePlayerDirection()
 
   const tileMapData: TileMapData = [
@@ -70,8 +81,8 @@ export const RpgApp = () => {
       options={{ backgroundColor: 0xeef1f5 }}
       onMount={(app) => {
         const myTicker = new PIXI.Ticker();
-        myTicker.minFPS = 120
-        myTicker.maxFPS = 120
+        myTicker.minFPS = 30
+        myTicker.maxFPS = 30
         myTicker.start()
 
         app.ticker = myTicker
