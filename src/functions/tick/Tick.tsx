@@ -1,7 +1,11 @@
 import { useApp, useTick } from "@pixi/react"
-import { Ticker } from "pixi.js";
 
-export const Tick = () => {
+export type TickProps = {
+  onTick: () => void
+}
+export const Tick = ({
+  onTick
+}: TickProps) => {
   /*
   const myTicker = new Ticker();
   myTicker.maxFPS = 1;
@@ -12,13 +16,9 @@ export const Tick = () => {
 
   const app = useApp()
 
+  // const dispatch = useAppDispatch()
   useTick((delta) => {
-    /*
-    60fps = delta 1
-    30fps = delta 2
-    */
-
-    console.log('fps', app.ticker.FPS, delta)
+    onTick()
   })
   return (<></>)
 }
