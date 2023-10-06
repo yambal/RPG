@@ -1,12 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit'
 
 import inputReducer from '../functions/input/inputSlice'
-import playerReducer from '../functions/player/playerSlice'
+import regionReducer from '../functions/region/regionSlice'
 
 export const store = configureStore({
   reducer: {
     input: inputReducer,
-    player: playerReducer
+    region: regionReducer
   },
 })
 

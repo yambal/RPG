@@ -9,9 +9,10 @@ import { useInputDirection } from '../../functions/input/hooks/useDirection';
 import { useAppDispatch } from '../../app/selectors/selector';
 import { clearInputDirection, setInputDirection } from '../../functions/input/inputSlice';
 import { Tick } from '../../functions/tick/Tick';
-import { Player } from '../player/Player';
-import { movePlayerTo, setPlayerCharDirection, setPlayerMoveToTarget } from '../player/playerSlice';
-import { usePlayerPosition, usePlayerDirection, usePlayerMoveToTarget } from '../player/hooks';
+import { onRegionTick } from '../region/regionSlice';
+import { Region } from '../region/Region';
+import { useRegionPlayerPosition } from '../region/hooks/useRegionPlayerPosition'
+import { useRegionU_I_CharDirection } from '../region/hooks/useRegionU_I_CharDirection';
 
 export const RpgApp = () => {
   const texture = PIXI.Texture.from(dummy, {scaleMode: PIXI.SCALE_MODES.NEAREST})
@@ -20,9 +21,6 @@ export const RpgApp = () => {
 
   const padDownHandler = React.useCallback((newInputDirection: InputDirection) => {
     dispatch(setInputDirection({inputDirection: newInputDirection}))
-    if (newInputDirection) {
-      dispatch(setPlayerCharDirection({charDirection: newInputDirection}))
-    }
   }, [dispatch])
 
   const padUpHandler = React.useCallback((inputDirection: InputDirection) => {
@@ -30,26 +28,14 @@ export const RpgApp = () => {
   }, [dispatch])
 
   const inputDirection = useInputDirection()
-  const playerMovingToDirection = usePlayerMoveToTarget()
-
-  const playerPosition = usePlayerPosition()
 
   const onTickHandler = React.useCallback(() => {
-      if (playerMovingToDirection) {
-        if (playerPosition.x > 64) {
-          dispatch(setPlayerMoveToTarget({playerMovingToDirection: null}))
-        } else {
-          dispatch(movePlayerTo({inputDirection: playerMovingToDirection}))
-        }
-      } else if (inputDirection){
-        dispatch(setPlayerMoveToTarget({playerMovingToDirection: inputDirection}))
-      }
-      
-    }, [dispatch, inputDirection, playerPosition.x, playerMovingToDirection]
+    dispatch(onRegionTick({inputDirection}))
+    }, [dispatch, inputDirection]
   )
 
-
-  const charDirection = usePlayerDirection()
+  const regionPlayerPosition = useRegionPlayerPosition()
+  const regionU_I_CharDirection = useRegionU_I_CharDirection()
 
   const tileMapData: TileMapData = [
     [
@@ -90,16 +76,16 @@ export const RpgApp = () => {
       raf={false}
     >
       <Tick onTick={onTickHandler}/>
+
       <TileMap
         texture={texture}
         tileSize={64}
         textureSize={16}
         tileMapData={tileMapData}
       />
-      <Player
-        x={playerPosition.x}
-        y={playerPosition.y}
-        uiCharDirection={charDirection}
+      <Region
+        regionPlayerPosition={regionPlayerPosition}
+        regionU_ICharDirection={regionU_I_CharDirection}
       />
       <Pad 
         onPadDown={padDownHandler}
